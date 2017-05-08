@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+//user=lin pass=abc
 
 /*****************************************************
 * This code only initializes a Database instance and *
@@ -20,8 +21,7 @@ public class Database {
 
     public Database()throws IOException, ClassNotFoundException, 
                             SQLException, Exception
-    {        System.out.println("A");
-
+    {
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
         } catch (ClassNotFoundException cnfe) {
@@ -29,7 +29,7 @@ public class Database {
         }
   //In the string to getConnection you may replace "MP3Player"      
         try {
-            conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sample;create=true;user=APP;pass=app");
+            conn = DriverManager.getConnection("jdbc:derby://localhost:1527/help;create=true;user=lin;password=abc");
             stat = conn.createStatement();
             } catch (SQLException ex) {
                 ex.printStackTrace();
