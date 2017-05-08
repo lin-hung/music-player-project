@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,15 +29,23 @@ public class MusicPlayerProject {
      */
     public static void main(String[] args) {
 //
+String filepath="";
         try {
             Database db = new Database();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            Connection connection=db.conn;
+            Statement statement=connection.createStatement();
+            String sql="SELECT * FROM SONGS";
+            ResultSet rs=statement.executeQuery(sql);
+            rs.next();
+            String songName=rs.getString("NAME");
+            System.out.println(songName);
+            filepath=rs.getString("FILEPATH");
+            System.out.println(filepath);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     BasicPlayer musicPlayer = new BasicPlayer();
-    String filepath = "C:\\Users\\lin\\Desktop\\musicFile.mp3";
     File file=new File(filepath);
         try {
             musicPlayer.open(file);
