@@ -1,0 +1,3 @@
+add derbyclient.jar to libraries
+also basicplayer3.0 and its libraries
+http://puu.sh/vJm7R/e06b2e9b74.png
