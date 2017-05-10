@@ -1,4 +1,7 @@
+package Test;
 
+
+import MusicPlayerProject.Database;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -73,14 +76,17 @@ public class SqlTest {
              while(rs.next()){
                  System.out.println(rs.getString("NAME"));
              }
+             if(!rs.next()){
+                 System.out.println("######");
+             }
              
          } catch (SQLException ex) {
              Logger.getLogger(SqlTest.class.getName()).log(Level.SEVERE, null, ex);
          } catch (Exception ex) {
              Logger.getLogger(SqlTest.class.getName()).log(Level.SEVERE, null, ex);
          }
-         
-    
+                     System.out.println("######");
+
      }
      
 }

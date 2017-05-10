@@ -1,3 +1,5 @@
+package MusicPlayerProject;
+
 //imports
 import java.sql.Statement;
 import java.io.IOException;
@@ -13,7 +15,7 @@ import java.sql.SQLException;
 *****************************************************/
 
 public class Database {
-    Connection conn; //once a connection is established it stays
+    public Connection conn; //once a connection is established it stays
                      //as long as the code that created this
 			     //instance does not exit
 
