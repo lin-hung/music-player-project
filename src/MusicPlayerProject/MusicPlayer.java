@@ -8,6 +8,7 @@ package MusicPlayerProject;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javazoom.jlgui.basicplayer.BasicPlayer;
+import javazoom.jlgui.basicplayer.BasicPlayerException;
 
 /**
  *
@@ -46,6 +48,33 @@ public class MusicPlayer {
         basicPlayer = new BasicPlayer();
     }
 
+    public void playNew(String selected) {
+        System.out.println("Playing" + selected);
+        String sql = "SELECT * FROM TestSongs where NAME='"
+                + selected + "'";
+        System.out.println(sql);
+        try {
+            ResultSet rs = statement.executeQuery(sql);
+            rs.next();
+            System.out.println(rs.getString("FILEPATH"));
+            File file = new File(rs.getString("FILEPATH"));
+            basicPlayer.open(file);
+            basicPlayer.play();
+        } catch (SQLException ex) {
+            Logger.getLogger(MusicPlayer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BasicPlayerException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void resume() {
+        try {
+            basicPlayer.resume();
+        } catch (BasicPlayerException ex) {
+            Logger.getLogger(MusicPlayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public String[] getSongNames() {
         ArrayList<String> names = new ArrayList();
         String filepath;
@@ -55,8 +84,7 @@ public class MusicPlayer {
             Statement statement = conn.createStatement();
             String sql = "SELECT * FROM TESTSONGS";
             ResultSet rs = statement.executeQuery(sql);
-            
-            
+
             while (rs.next()) {//getting filepath
                 filepath = rs.getString("FILEPATH");
                 System.out.println(filepath);
@@ -75,7 +103,7 @@ public class MusicPlayer {
                     Logger.getLogger(MusicPlayer.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            for (String str:names){
+            for (String str : names) {
                 System.out.println(str);
             }
             return (names.toArray(new String[names.size()]));
@@ -86,7 +114,7 @@ public class MusicPlayer {
         }
     }
 
-    void addSong(String path) {
+    public void addSong(String path) {
         try {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO TestSongs(name, filepath) VALUES (?,?)");
 
@@ -105,5 +133,36 @@ public class MusicPlayer {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void removeSong(String selected) {
+        System.out.println("Removing " + selected);
+        String sql = "DELETE FROM TestSongs where NAME='"
+                + selected + "'";
+        System.out.println(sql);
+        try {
+            statement.execute(sql);
+        } catch (SQLException ex) {
+            Logger.getLogger(MusicPlayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    void pause() {
+        try {
+            basicPlayer.pause();
+        } catch (BasicPlayerException ex) {
+            Logger.getLogger(MusicPlayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    void stop() {
+        System.out.println("player stopped");
+        try {
+            basicPlayer.pause();
+        } catch (BasicPlayerException ex) {
+            Logger.getLogger(MusicPlayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        basicPlayer=new BasicPlayer();
     }
 }
